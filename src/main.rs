@@ -6,9 +6,12 @@ pub mod compile;
 fn main() -> anyhow::Result<()> {
     let args = args::Args::parse();
 
-    std::env::set_var("OUT_DIR", &args.output_dir);
+    args.print_info();
 
-    compile::compile(&args.input_file, &[])?;
+    std::env::set_var("OUT_DIR", &args.output_dir);
+    let includes: Vec<&str> = args.includes.iter().map(|x| x.as_str()).collect();
+
+    compile::compile(&args.input_file, &includes)?;
 
     Ok(())
 }
